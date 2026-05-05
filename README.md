@@ -91,9 +91,3 @@ kubectl apply -f k8s/
 * Agent workflow is sequential, not fully autonomous
 * Retrieval system is basic (no semantic search)
 * Output quality depends on external APIs
-
----
-
-## Author
-
-Aaditi Bhale
