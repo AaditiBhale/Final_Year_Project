@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mfg-frontend
+  labels:
+    app: mfg-frontend
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: mfg-frontend
+  template:
+    metadata:
+      labels:
+        app: mfg-frontend
+    spec:
+      containers:
+        - name: mfg-frontend
+          image: mfg-frontend:v1
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8501
+          env:
+            - name: API_BASE
+              value: "http://mfg-backend-svc:5000"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mfg-frontend-svc
+spec:
+  type: NodePort
+  selector:
+    app: mfg-frontend
+  ports:
+    - protocol: TCP
+      port: 8501
+      targetPort: 8501
+      nodePort: 30851

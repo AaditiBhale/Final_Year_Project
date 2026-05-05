@@ -1,0 +1,24 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mfg-backend
+    ports:
+      - "5001:5000"
+    env_file:
+      - .env
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    container_name: mfg-frontend
+    ports:
+      - "8502:8501"
+    environment:
+      - API_BASE=http://backend:5000
+    depends_on:
+      - backend
+    restart: unless-stopped
